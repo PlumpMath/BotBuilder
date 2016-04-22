@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -7,12 +6,15 @@ var __extends = (this && this.__extends) || function (d, b) {
 var actions = require('./DialogAction');
 var simpleDialog = require('./SimpleDialog');
 var events = require('events');
+var prompts = require('./Prompts');
+var consts = require('../consts');
 var DialogCollection = (function (_super) {
     __extends(DialogCollection, _super);
     function DialogCollection() {
         _super.call(this);
         this.middleware = [];
         this.dialogs = {};
+        this.add(consts.DialogId.Prompts, new prompts.Prompts());
     }
     DialogCollection.prototype.add = function (id, dialog) {
         var dialogs;
@@ -53,5 +55,5 @@ var DialogCollection = (function (_super) {
         return this;
     };
     return DialogCollection;
-}(events.EventEmitter));
+})(events.EventEmitter);
 exports.DialogCollection = DialogCollection;

@@ -17,10 +17,10 @@ namespace Microsoft.Bot.Sample.PizzaBot
         {
             var builder = new FormBuilder<PizzaOrder>();
 
-            ConditionalDelegate<PizzaOrder> isBYO = (pizza) => pizza.Kind == PizzaOptions.BYOPizza;
-            ConditionalDelegate<PizzaOrder> isSignature = (pizza) => pizza.Kind == PizzaOptions.SignaturePizza;
-            ConditionalDelegate<PizzaOrder> isGourmet = (pizza) => pizza.Kind == PizzaOptions.GourmetDelitePizza;
-            ConditionalDelegate<PizzaOrder> isStuffed = (pizza) => pizza.Kind == PizzaOptions.StuffedPizza;
+            ActiveDelegate<PizzaOrder> isBYO = (pizza) => pizza.Kind == PizzaOptions.BYOPizza;
+            ActiveDelegate<PizzaOrder> isSignature = (pizza) => pizza.Kind == PizzaOptions.SignaturePizza;
+            ActiveDelegate<PizzaOrder> isGourmet = (pizza) => pizza.Kind == PizzaOptions.GourmetDelitePizza;
+            ActiveDelegate<PizzaOrder> isStuffed = (pizza) => pizza.Kind == PizzaOptions.StuffedPizza;
 
             return builder
                 // .Field(nameof(PizzaOrder.Choice))
@@ -41,9 +41,9 @@ namespace Microsoft.Bot.Sample.PizzaBot
                 ;
         }
 
-        internal static IDialog MakeRoot()
+        internal static IDialog<PizzaOrder> MakeRoot()
         {
-            return new PizzaOrderDialog(BuildForm);
+            return Chain.From(() => new PizzaOrderDialog(BuildForm));
         }
 
         /// <summary>

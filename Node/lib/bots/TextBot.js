@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -15,7 +14,8 @@ var TextBot = (function (_super) {
         _super.call(this);
         this.options = {
             maxSessionAge: 14400000,
-            defaultDialogId: '/'
+            defaultDialogId: '/',
+            minSendDelay: 1000
         };
         this.configure(options);
     }
@@ -67,6 +67,7 @@ var TextBot = (function (_super) {
         if (newSessionState === void 0) { newSessionState = false; }
         var ses = new session.Session({
             localizer: this.options.localizer,
+            minSendDelay: this.options.minSendDelay,
             dialogs: this,
             dialogId: dialogId,
             dialogArgs: dialogArgs
@@ -104,8 +105,13 @@ var TextBot = (function (_super) {
             _this.emit('quit', message);
         });
         this.getData(userId, function (err, userData, sessionState) {
-            ses.userData = userData || {};
-            ses.dispatch(newSessionState ? null : sessionState, message);
+            if (!err) {
+                ses.userData = userData || {};
+                ses.dispatch(newSessionState ? null : sessionState, message);
+            }
+            else {
+                _this.emit('error', err, message);
+            }
         });
     };
     TextBot.prototype.getData = function (userId, callback) {
@@ -159,5 +165,5 @@ var TextBot = (function (_super) {
         this.options.sessionStore.save(userId, sessionState, onComplete);
     };
     return TextBot;
-}(collection.DialogCollection));
+})(collection.DialogCollection);
 exports.TextBot = TextBot;

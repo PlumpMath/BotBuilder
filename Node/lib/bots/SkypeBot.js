@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -15,7 +14,8 @@ var SkypeBot = (function (_super) {
         this.botService = botService;
         this.options = {
             maxSessionAge: 14400000,
-            defaultDialogId: '/'
+            defaultDialogId: '/',
+            minSendDelay: 1000
         };
         this.configure(options);
         var events = 'message|personalMessage|groupMessage|attachment|threadBotAdded|threadAddMember|threadBotRemoved|threadRemoveMember|contactAdded|threadTopicUpdated|threadHistoryDisclosedUpdate'.split('|');
@@ -87,6 +87,7 @@ var SkypeBot = (function (_super) {
         };
         var ses = new SkypeSession({
             localizer: this.options.localizer,
+            minSendDelay: this.options.minSendDelay,
             dialogs: this,
             dialogId: dialogId,
             dialogArgs: dialogArgs
@@ -203,7 +204,7 @@ var SkypeBot = (function (_super) {
         };
     };
     return SkypeBot;
-}(collection.DialogCollection));
+})(collection.DialogCollection);
 exports.SkypeBot = SkypeBot;
 var SkypeSession = (function (_super) {
     __extends(SkypeSession, _super);
@@ -227,5 +228,5 @@ var SkypeSession = (function (_super) {
         return text;
     };
     return SkypeSession;
-}(session.Session));
+})(session.Session);
 exports.SkypeSession = SkypeSession;

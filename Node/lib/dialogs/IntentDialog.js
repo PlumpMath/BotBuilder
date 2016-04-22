@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -139,9 +138,10 @@ var IntentDialog = (function (_super) {
                 match = this.findHandler(topIntent);
             }
             if (!match) {
+                topIntent = { intent: consts.Intents.Default, score: 1.0 };
                 match = {
                     groupId: consts.Id.DefaultGroup,
-                    handler: this.getDefaultGroup()._intentHandler(consts.Intents.Default)
+                    handler: this.getDefaultGroup()._intentHandler(topIntent.intent)
                 };
             }
             if (match) {
@@ -159,13 +159,15 @@ var IntentDialog = (function (_super) {
     };
     IntentDialog.prototype.findTopIntent = function (intents) {
         var topIntent;
-        for (var i = 0; i < intents.length; i++) {
-            var intent = intents[i];
-            if (!topIntent) {
-                topIntent = intent;
-            }
-            else if (intent.score > topIntent.score) {
-                topIntent = intent;
+        if (intents) {
+            for (var i = 0; i < intents.length; i++) {
+                var intent = intents[i];
+                if (!topIntent) {
+                    topIntent = intent;
+                }
+                else if (intent.score > topIntent.score) {
+                    topIntent = intent;
+                }
             }
         }
         return topIntent;
@@ -188,7 +190,7 @@ var IntentDialog = (function (_super) {
     };
     IntentDialog.CAPTURE_THRESHOLD = 0.6;
     return IntentDialog;
-}(dialog.Dialog));
+})(dialog.Dialog);
 exports.IntentDialog = IntentDialog;
 var IntentGroup = (function () {
     function IntentGroup(id) {
@@ -219,5 +221,5 @@ var IntentGroup = (function () {
         return this;
     };
     return IntentGroup;
-}());
+})();
 exports.IntentGroup = IntentGroup;

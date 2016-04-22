@@ -1,6 +1,6 @@
-"use strict";
 exports.Data = {
     SessionState: 'BotBuilder.Data.SessionState',
+    SessionId: 'BotBuilder.Data.SessionId',
     Handler: 'BotBuilder.Data.Handler',
     Group: 'BotBuilder.Data.Group',
     Intent: 'BotBuilder.Data.Intent',
